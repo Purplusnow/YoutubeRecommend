@@ -609,6 +609,26 @@
       text-align: center;
     }
 
+.ad-inline-card {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ad-inline-inner {
+  width: 100%;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+    
     @media (max-width: 768px) {
       header,
       .hero,
@@ -675,6 +695,14 @@
       .category-select {
         min-height: 42px;
       }
+
+      .ad-inline-card,
+      .ad-inline-inner {
+        min-height: 90px;
+        border-radius: 14px;
+      }
+      
+      
     }
   </style>
 </head>
@@ -765,18 +793,6 @@
   </div>
 
   <span class="last-updated" id="lastUpdated"></span>
-</div>
-
-<!-- 중간 광고 -->
-<div class="ads-wrap">
-  <div class="ad-box side-space">
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-4640178123605595"
-      data-ad-slot="1712918053"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
 </div>
 
 <div id="loader">
@@ -1018,9 +1034,33 @@ function renderVideos() {
       window.open(`https://youtube.com/watch?v=${v.id}`, '_blank', 'noopener');
     });
     grid.appendChild(card);
+
+    // 21번째 카드 뒤에 광고 삽입
+    if (i === 20) {
+      const adCard = document.createElement('div');
+      adCard.className = 'ad-inline-card';
+      adCard.innerHTML = `
+        <div class="ad-inline-inner">
+          <ins class="adsbygoogle"
+            style="display:block; width:100%;"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-slot="2345678901"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        </div>
+      `;
+      grid.appendChild(adCard);
+
+      const adEl = adCard.querySelector('.adsbygoogle');
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        adEl.dataset.adsInitialized = 'true';
+      } catch (e) {
+        console.warn('Inline AdSense init skipped:', e);
+      }
+    }
   });
 }
-
 function getTrendClass(rank) {
   if (rank <= 5) return 'trend-hot';
   if (rank <= 15) return 'trend-rising';
