@@ -611,11 +611,12 @@
 
 .ad-inline-card {
   grid-column: 1 / -1;
+  width: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 18px;
   overflow: hidden;
-  min-height: 110px;
+  min-height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -623,11 +624,26 @@
 
 .ad-inline-inner {
   width: 100%;
-  min-height: 110px;
+  min-height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+.ads-wrap,
+.ad-box,
+.ad-inline-card,
+.ad-inline-inner {
+  width: 100%;
+}
+
+.adsbygoogle {
+  display: block !important;
+  width: 100% !important;
+  min-height: 90px;
+}
+
+    
     
     @media (max-width: 768px) {
       header,
@@ -696,12 +712,12 @@
         min-height: 42px;
       }
 
-      .ad-inline-card,
-      .ad-inline-inner {
-        min-height: 90px;
-        border-radius: 14px;
-      }
-      
+
+  .ad-inline-card,
+  .ad-inline-inner,
+  .adsbygoogle {
+    min-height: 90px;
+  }      
       
     }
   </style>
@@ -877,17 +893,32 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function initAds() {
-  document.querySelectorAll('.adsbygoogle').forEach(ad => {
-    if (!ad.dataset.adsInitialized) {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        ad.dataset.adsInitialized = 'true';
-      } catch (e) {
-        console.warn('AdSense init skipped:', e);
-      }
-    }
-  });
+  document.querySelectorAll('.adsbygoogle').forEach(initSingleAd);
 }
+
+function initSingleAd(ad) {
+  if (!ad) return;
+  if (ad.dataset.adsInitialized === 'true') return;
+
+  const rect = ad.getBoundingClientRect();
+  const parent = ad.parentElement;
+  const parentRect = parent ? parent.getBoundingClientRect() : { width: 0 };
+
+  const availableWidth = Math.max(rect.width, parentRect.width);
+
+  if (availableWidth <= 0) {
+    requestAnimationFrame(() => initSingleAd(ad));
+    return;
+  }
+
+  try {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    ad.dataset.adsInitialized = 'true';
+  } catch (e) {
+    console.warn('AdSense init skipped:', e);
+  }
+}
+  
 
 async function fetchTrending() {
   if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_YOUTUBE_API_KEY_HERE') {
@@ -1051,13 +1082,9 @@ function renderVideos() {
       `;
       grid.appendChild(adCard);
 
-      const adEl = adCard.querySelector('.adsbygoogle');
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        adEl.dataset.adsInitialized = 'true';
-      } catch (e) {
-        console.warn('Inline AdSense init skipped:', e);
-      }
+const adEl = adCard.querySelector('.adsbygoogle');
+initSingleAd(adEl);
+    
     }
   });
 }
