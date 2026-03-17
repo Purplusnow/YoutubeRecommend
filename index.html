@@ -893,17 +893,20 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function initAds() {
-  document.querySelectorAll('.adsbygoogle').forEach(initSingleAd);
+  document.querySelectorAll('.adsbygoogle').forEach(ad => {
+    initSingleAd(ad);
+  });
 }
 
 function initSingleAd(ad) {
   if (!ad) return;
+
   if (ad.dataset.adsInitialized === 'true') return;
+  if (ad.getAttribute('data-adsbygoogle-status') === 'done') return;
 
-  const rect = ad.getBoundingClientRect();
   const parent = ad.parentElement;
+  const rect = ad.getBoundingClientRect();
   const parentRect = parent ? parent.getBoundingClientRect() : { width: 0 };
-
   const availableWidth = Math.max(rect.width, parentRect.width);
 
   if (availableWidth <= 0) {
@@ -917,7 +920,8 @@ function initSingleAd(ad) {
   } catch (e) {
     console.warn('AdSense init skipped:', e);
   }
-}
+}  
+
   
 
 async function fetchTrending() {
