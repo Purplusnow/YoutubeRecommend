@@ -4,8 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TRENDING — 유튜브 트렌드 탐색기</title>
+  <meta name="description" content="한국, 미국, 일본, 영국 등 지역별 유튜브 인기 트렌딩 영상을 한눈에 탐색해보세요.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4640178123605595"
+    crossorigin="anonymous"></script>
+
   <style>
     :root {
       --bg: #0a0a0a;
@@ -29,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
@@ -40,7 +44,6 @@
       opacity: 0.4;
     }
 
-    /* ── HEADER ── */
     header {
       border-bottom: 1px solid var(--border);
       padding: 0 40px;
@@ -66,7 +69,8 @@
     }
 
     .logo-dot {
-      width: 8px; height: 8px;
+      width: 8px;
+      height: 8px;
       background: var(--accent);
       border-radius: 50%;
       animation: pulse 1.8s ease-in-out infinite;
@@ -77,114 +81,6 @@
       50% { opacity: 0.4; transform: scale(0.7); }
     }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    /* ── API KEY MODAL ── */
-    #apiModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #apiModal.hidden { display: none; }
-
-    .modal-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 48px;
-      width: 480px;
-      max-width: 90vw;
-      position: relative;
-    }
-
-    .modal-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-    }
-
-    .modal-title {
-      font-family: 'Black Han Sans', sans-serif;
-      font-size: 28px;
-      letter-spacing: 4px;
-      margin-bottom: 8px;
-    }
-
-    .modal-sub {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
-
-    .modal-sub a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .modal-sub a:hover { text-decoration: underline; }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-family: 'Space Mono', monospace;
-    }
-
-    input[type="text"], input[type="password"] {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 14px 16px;
-      font-size: 14px;
-      font-family: 'Space Mono', monospace;
-      width: 100%;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input[type="text"]:focus, input[type="password"]:focus {
-      border-color: var(--accent);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      font-family: 'Black Han Sans', sans-serif;
-      font-size: 15px;
-      letter-spacing: 3px;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: #ff4d4d;
-      transform: translateY(-1px);
-    }
-
-    /* ── HERO ── */
     .hero {
       padding: 80px 40px 40px;
       max-width: 1400px;
@@ -213,7 +109,26 @@
       color: transparent;
     }
 
-    /* ── CONTROLS ── */
+    .ads-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px 32px;
+    }
+
+    .ad-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .ad-box.side-space {
+      min-height: 140px;
+    }
+
     .controls {
       max-width: 1400px;
       margin: 0 auto;
@@ -289,11 +204,14 @@
       transition: border-color 0.2s;
     }
 
-    .search-wrap input:focus { border-color: #444; }
+    .search-wrap input:focus {
+      border-color: #444;
+    }
 
     .search-icon {
       position: absolute;
-      left: 12px; top: 50%;
+      left: 12px;
+      top: 50%;
       transform: translateY(-50%);
       color: var(--muted);
       font-size: 14px;
@@ -319,33 +237,58 @@
       color: var(--accent);
     }
 
-    .refresh-btn .spin { transition: transform 0.5s; }
-    .refresh-btn:hover .spin { transform: rotate(180deg); }
+    .refresh-btn .spin {
+      transition: transform 0.5s;
+    }
 
-    .api-btn {
-      background: transparent;
-      border: 1px solid #333;
-      color: var(--muted);
-      padding: 8px 16px;
+    .refresh-btn:hover .spin {
+      transform: rotate(180deg);
+    }
+
+    .sort-row {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px 20px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .sort-label {
       font-family: 'Space Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .sort-btn {
+      padding: 5px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
       letter-spacing: 1px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .api-btn:hover { color: var(--text); border-color: #555; }
+    .sort-btn.active,
+    .sort-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
-    /* ── STATS BAR ── */
     .stats-bar {
       max-width: 1400px;
-      margin: 0 auto;
+      margin: 0 auto 40px;
       padding: 0 40px 32px;
       display: flex;
       gap: 32px;
       align-items: center;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
     }
 
     .stat-item {
@@ -368,7 +311,8 @@
     }
 
     .stat-divider {
-      width: 1px; height: 40px;
+      width: 1px;
+      height: 40px;
       background: var(--border);
     }
 
@@ -379,7 +323,84 @@
       color: var(--muted);
     }
 
-    /* ── GRID ── */
+    #loader {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px;
+      gap: 24px;
+    }
+
+    #loader.show {
+      display: flex;
+    }
+
+    .loader-bars {
+      display: flex;
+      gap: 4px;
+      align-items: flex-end;
+      height: 40px;
+    }
+
+    .bar {
+      width: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      animation: barAnim 1s ease-in-out infinite;
+    }
+
+    .bar:nth-child(1) { animation-delay: 0s; }
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.3s; }
+    .bar:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes barAnim {
+      0%, 100% { height: 8px; opacity: 0.4; }
+      50% { height: 40px; opacity: 1; }
+    }
+
+    .loader-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    #emptyState {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px;
+      gap: 16px;
+      text-align: center;
+    }
+
+    #emptyState.show {
+      display: flex;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      opacity: 0.3;
+    }
+
+    .empty-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 24px;
+      letter-spacing: 4px;
+    }
+
+    .empty-sub {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 360px;
+      line-height: 1.7;
+    }
+
     .grid-wrap {
       max-width: 1400px;
       margin: 0 auto;
@@ -392,7 +413,6 @@
       gap: 2px;
     }
 
-    /* ── VIDEO CARD ── */
     .video-card {
       background: var(--surface);
       cursor: pointer;
@@ -414,12 +434,18 @@
       border-color: var(--border);
     }
 
-    .video-card:hover .rank-badge { opacity: 1; }
-    .video-card:hover .thumb-overlay { opacity: 1; }
+    .video-card:hover .rank-badge {
+      opacity: 1;
+    }
+
+    .video-card:hover .thumb-overlay {
+      opacity: 1;
+    }
 
     .rank-badge {
       position: absolute;
-      top: 12px; left: 12px;
+      top: 12px;
+      left: 12px;
       background: var(--accent);
       color: white;
       font-family: 'Space Mono', monospace;
@@ -443,7 +469,8 @@
     }
 
     .thumb-wrap img {
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       transition: transform 0.4s ease;
     }
@@ -464,7 +491,8 @@
     }
 
     .play-icon {
-      width: 52px; height: 52px;
+      width: 52px;
+      height: 52px;
       background: var(--accent);
       border-radius: 50%;
       display: flex;
@@ -475,7 +503,8 @@
 
     .duration-badge {
       position: absolute;
-      bottom: 8px; right: 8px;
+      bottom: 8px;
+      right: 8px;
       background: rgba(0,0,0,0.85);
       color: white;
       font-family: 'Space Mono', monospace;
@@ -541,154 +570,72 @@
     .trend-rising { background: rgba(255,107,0,0.15); color: var(--accent2); }
     .trend-new { background: rgba(0,200,100,0.15); color: #00c864; }
 
-    /* ── LOADING ── */
-    #loader {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 40px;
-      gap: 24px;
-    }
-
-    #loader.show { display: flex; }
-
-    .loader-bars {
-      display: flex;
-      gap: 4px;
-      align-items: flex-end;
-      height: 40px;
-    }
-
-    .bar {
-      width: 4px;
-      background: var(--accent);
-      border-radius: 2px;
-      animation: barAnim 1s ease-in-out infinite;
-    }
-
-    .bar:nth-child(1) { animation-delay: 0s; }
-    .bar:nth-child(2) { animation-delay: 0.1s; }
-    .bar:nth-child(3) { animation-delay: 0.2s; }
-    .bar:nth-child(4) { animation-delay: 0.3s; }
-    .bar:nth-child(5) { animation-delay: 0.4s; }
-
-    @keyframes barAnim {
-      0%, 100% { height: 8px; opacity: 0.4; }
-      50% { height: 40px; opacity: 1; }
-    }
-
-    .loader-text {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 4px;
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      padding: 28px 40px 60px;
       color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    /* ── EMPTY / ERROR ── */
-    #emptyState {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 40px;
-      gap: 16px;
+      font-size: 12px;
       text-align: center;
     }
 
-    #emptyState.show { display: flex; }
-
-    .empty-icon { font-size: 48px; opacity: 0.3; }
-    .empty-title { font-family: 'Black Han Sans', sans-serif; font-size: 24px; letter-spacing: 4px; }
-    .empty-sub { color: var(--muted); font-size: 13px; max-width: 360px; line-height: 1.7; }
-
-    /* ── SORT BAR ── */
-    .sort-row {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 40px 20px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .sort-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-right: 4px;
-    }
-
-    .sort-btn {
-      padding: 5px 12px;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .sort-btn.active, .sort-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      header, .hero, .controls, .stats-bar, .grid-wrap, .sort-row {
+      header,
+      .hero,
+      .ads-wrap,
+      .controls,
+      .sort-row,
+      .stats-bar,
+      .grid-wrap,
+      footer {
         padding-left: 20px;
         padding-right: 20px;
       }
-      .hero-title { font-size: 48px; }
-      .stats-bar { gap: 16px; flex-wrap: wrap; }
-      .last-updated { margin-left: 0; }
+
+      .hero-title {
+        font-size: 48px;
+      }
+
+      .stats-bar {
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .last-updated {
+        margin-left: 0;
+      }
+
+      .ad-box {
+        min-height: 100px;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- API KEY MODAL -->
-<div id="apiModal">
-  <div class="modal-box">
-    <div class="modal-title">TRENDING</div>
-    <p class="modal-sub">
-      유튜브 트렌딩 영상을 탐색하려면<br>
-      YouTube Data API v3 키가 필요합니다.<br><br>
-      🔑 <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank">Google Cloud Console</a>에서 무료로 발급받으세요.<br>
-      API 키는 브라우저에만 저장되며 외부로 전송되지 않습니다.
-    </p>
-    <div class="input-group">
-      <label>YouTube Data API v3 Key</label>
-      <input type="password" id="apiKeyInput" placeholder="AIzaSy..." />
-    </div>
-    <button class="btn-primary" onclick="saveApiKey()">시작하기 →</button>
-  </div>
-</div>
-
-<!-- HEADER -->
 <header>
   <div class="logo">
     <div class="logo-dot"></div>
     TRENDING
   </div>
-  <div class="header-right">
-    <button class="api-btn" onclick="showApiModal()">⚙ API 키 변경</button>
-  </div>
 </header>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-label">▶ REAL-TIME YOUTUBE TRENDS</div>
   <h1 class="hero-title">지금<br><span>뜨고 있는</span><br>영상</h1>
 </div>
 
-<!-- CONTROLS -->
+<div class="ads-wrap">
+  <div class="ad-box">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4640178123605595"
+      data-ad-slot="1089514795"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
 <div class="controls">
   <div class="region-tabs">
     <button class="tab-btn active" data-region="KR">🇰🇷 한국</button>
@@ -697,6 +644,7 @@
     <button class="tab-btn" data-region="GB">🇬🇧 영국</button>
     <button class="tab-btn" data-region="">🌍 글로벌</button>
   </div>
+
   <select class="category-select" id="categorySelect">
     <option value="0">전체 카테고리</option>
     <option value="10">🎵 음악</option>
@@ -708,16 +656,17 @@
     <option value="28">🔬 과학/기술</option>
     <option value="17">⚽ 스포츠</option>
   </select>
+
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="제목, 채널 검색..." />
   </div>
+
   <button class="refresh-btn" onclick="fetchTrending()">
     <span class="spin">↻</span> 새로고침
   </button>
 </div>
 
-<!-- SORT ROW -->
 <div class="sort-row">
   <span class="sort-label">정렬</span>
   <button class="sort-btn active" data-sort="rank">순위순</button>
@@ -726,63 +675,86 @@
   <button class="sort-btn" data-sort="recent">최신순</button>
 </div>
 
-<!-- STATS BAR -->
 <div class="stats-bar" id="statsBar" style="display:none">
   <div class="stat-item">
     <span class="stat-num" id="statCount">0</span>
     <span class="stat-label">트렌딩 영상</span>
   </div>
+
   <div class="stat-divider"></div>
+
   <div class="stat-item">
     <span class="stat-num" id="statViews">0</span>
     <span class="stat-label">총 조회수</span>
   </div>
+
   <div class="stat-divider"></div>
+
   <div class="stat-item">
     <span class="stat-num" id="statLikes">0</span>
     <span class="stat-label">총 좋아요</span>
   </div>
+
   <span class="last-updated" id="lastUpdated"></span>
 </div>
 
-<!-- LOADER -->
+<div class="ads-wrap">
+  <div class="ad-box side-space">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4640178123605595"
+      data-ad-slot="1089514795"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
 <div id="loader">
   <div class="loader-bars">
-    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    <div class="bar"></div><div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
   </div>
   <div class="loader-text">FETCHING TRENDS...</div>
 </div>
 
-<!-- EMPTY STATE -->
 <div id="emptyState">
   <div class="empty-icon">📡</div>
   <div class="empty-title">NO SIGNAL</div>
-  <div class="empty-sub">API 키를 입력하거나 검색 결과가 없습니다. 다른 카테고리 또는 지역을 선택해보세요.</div>
+  <div class="empty-sub">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해보세요.</div>
 </div>
 
-<!-- GRID -->
 <div class="grid-wrap">
   <div id="videoGrid"></div>
 </div>
 
+<div class="ads-wrap">
+  <div class="ad-box">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-4640178123605595"
+      data-ad-slot="1089514795"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+</div>
+
+<footer>
+  TRENDING · 실시간 유튜브 인기 영상 탐색기
+</footer>
+
 <script>
-const API_KEY_STORE = 'yt_trend_api_key';
+const YOUTUBE_API_KEY = 'AIzaSyCSWowaYUKNwiTi-ZQIxpOXsxbcZCwyIhY';
+
 let allVideos = [];
 let currentSort = 'rank';
 let currentRegion = 'KR';
 let currentCategory = '0';
 let searchQuery = '';
 
-// ── INIT ──
 window.addEventListener('DOMContentLoaded', () => {
-  const stored = localStorage.getItem(API_KEY_STORE);
-  if (stored) {
-    document.getElementById('apiModal').classList.add('hidden');
-    fetchTrending();
-  }
-
-  // Region tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -792,13 +764,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Category
   document.getElementById('categorySelect').addEventListener('change', (e) => {
     currentCategory = e.target.value;
     fetchTrending();
   });
 
-  // Search
   let searchTimer;
   document.getElementById('searchInput').addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase();
@@ -806,7 +776,6 @@ window.addEventListener('DOMContentLoaded', () => {
     searchTimer = setTimeout(renderVideos, 300);
   });
 
-  // Sort
   document.querySelectorAll('.sort-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
@@ -816,45 +785,49 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Enter key on API input
-  document.getElementById('apiKeyInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') saveApiKey();
-  });
+  initAds();
+  fetchTrending();
 });
 
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key) return;
-  localStorage.setItem(API_KEY_STORE, key);
-  document.getElementById('apiModal').classList.add('hidden');
-  fetchTrending();
+function initAds() {
+  document.querySelectorAll('.adsbygoogle').forEach(ad => {
+    if (!ad.dataset.adsInitialized) {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        ad.dataset.adsInitialized = 'true';
+      } catch (e) {
+        console.warn('AdSense init skipped:', e);
+      }
+    }
+  });
 }
 
-function showApiModal() {
-  document.getElementById('apiModal').classList.remove('hidden');
-}
-
-// ── FETCH ──
 async function fetchTrending() {
-  const apiKey = localStorage.getItem(API_KEY_STORE);
-  if (!apiKey) { showApiModal(); return; }
+  if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'YOUR_YOUTUBE_API_KEY_HERE') {
+    showEmpty('YouTube API 키가 설정되지 않았습니다.');
+    document.getElementById('statsBar').style.display = 'none';
+    return;
+  }
 
   setLoading(true);
   allVideos = [];
 
   try {
-    const videos = await fetchAllPages(apiKey);
+    const videos = await fetchAllPages(YOUTUBE_API_KEY);
     allVideos = videos;
     updateStats();
     renderVideos();
     document.getElementById('lastUpdated').textContent =
-      '업데이트: ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+      '업데이트: ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
     document.getElementById('statsBar').style.display = 'flex';
   } catch (err) {
     console.error(err);
-    showEmpty(err.message.includes('403') || err.message.includes('400')
-      ? 'API 키가 유효하지 않거나 할당량이 초과되었습니다.'
-      : '데이터를 불러오는 중 오류가 발생했습니다: ' + err.message);
+    showEmpty(
+      err.message.includes('403') || err.message.includes('400')
+        ? 'API 키가 유효하지 않거나 할당량이 초과되었습니다.'
+        : '데이터를 불러오는 중 오류가 발생했습니다: ' + err.message
+    );
+    document.getElementById('statsBar').style.display = 'none';
   } finally {
     setLoading(false);
   }
@@ -869,18 +842,20 @@ async function fetchAllPages(apiKey) {
     const params = new URLSearchParams({
       part: 'snippet,statistics,contentDetails',
       chart: 'mostPopular',
-      regionCode: currentRegion || 'US',
-      videoCategoryId: currentCategory,
       maxResults: 25,
-      key: apiKey,
-      ...(pageToken && { pageToken })
+      key: apiKey
     });
+
+    if (currentRegion) params.set('regionCode', currentRegion);
+    if (currentCategory !== '0') params.set('videoCategoryId', currentCategory);
+    if (pageToken) params.set('pageToken', pageToken);
 
     const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?${params}`);
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error?.message || `HTTP ${res.status}`);
     }
+
     const data = await res.json();
     results = results.concat(data.items || []);
     pageToken = data.nextPageToken || '';
@@ -894,31 +869,34 @@ async function fetchAllPages(apiKey) {
     channel: v.snippet.channelTitle,
     thumbnail: v.snippet.thumbnails?.high?.url || v.snippet.thumbnails?.medium?.url,
     publishedAt: v.snippet.publishedAt,
-    views: parseInt(v.statistics.viewCount || 0),
-    likes: parseInt(v.statistics.likeCount || 0),
-    comments: parseInt(v.statistics.commentCount || 0),
-    duration: parseDuration(v.contentDetails?.duration || ''),
+    views: parseInt(v.statistics.viewCount || 0, 10),
+    likes: parseInt(v.statistics.likeCount || 0, 10),
+    comments: parseInt(v.statistics.commentCount || 0, 10),
+    duration: parseDuration(v.contentDetails?.duration || '')
   }));
 }
 
 function parseDuration(iso) {
   const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!m) return '';
-  const h = parseInt(m[1] || 0);
-  const min = parseInt(m[2] || 0);
-  const s = parseInt(m[3] || 0);
-  if (h > 0) return `${h}:${String(min).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  return `${min}:${String(s).padStart(2,'0')}`;
+
+  const h = parseInt(m[1] || 0, 10);
+  const min = parseInt(m[2] || 0, 10);
+  const s = parseInt(m[3] || 0, 10);
+
+  if (h > 0) {
+    return `${h}:${String(min).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  return `${min}:${String(s).padStart(2, '0')}`;
 }
 
-// ── RENDER ──
 function renderVideos() {
   const grid = document.getElementById('videoGrid');
   grid.innerHTML = '';
 
   let videos = [...allVideos];
 
-  // Filter
   if (searchQuery) {
     videos = videos.filter(v =>
       v.title.toLowerCase().includes(searchQuery) ||
@@ -926,13 +904,21 @@ function renderVideos() {
     );
   }
 
-  // Sort
-  if (currentSort === 'views') videos.sort((a,b) => b.views - a.views);
-  else if (currentSort === 'likes') videos.sort((a,b) => b.likes - a.likes);
-  else if (currentSort === 'recent') videos.sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-  else videos.sort((a,b) => a.rank - b.rank);
+  if (currentSort === 'views') {
+    videos.sort((a, b) => b.views - a.views);
+  } else if (currentSort === 'likes') {
+    videos.sort((a, b) => b.likes - a.likes);
+  } else if (currentSort === 'recent') {
+    videos.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  } else {
+    videos.sort((a, b) => a.rank - b.rank);
+  }
 
-  if (videos.length === 0) { showEmpty(); return; }
+  if (videos.length === 0) {
+    showEmpty('검색 결과가 없습니다. 다른 검색어나 카테고리를 시도해보세요.');
+    return;
+  }
+
   document.getElementById('emptyState').classList.remove('show');
 
   videos.forEach((v, i) => {
@@ -942,7 +928,7 @@ function renderVideos() {
     card.innerHTML = `
       <div class="rank-badge ${v.rank <= 3 ? 'top3' : ''}">#${v.rank}</div>
       <div class="thumb-wrap">
-        <img src="${v.thumbnail}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/480x270/111/333?text=NO+IMAGE'">
+        <img src="${v.thumbnail}" alt="${escHtml(v.title)}" loading="lazy" onerror="this.src='https://via.placeholder.com/480x270/111/333?text=NO+IMAGE'">
         <div class="thumb-overlay"><div class="play-icon">▶</div></div>
         ${v.duration ? `<div class="duration-badge">${v.duration}</div>` : ''}
       </div>
@@ -956,8 +942,11 @@ function renderVideos() {
           </div>
           <span class="trend-badge ${getTrendClass(v.rank)}">${getTrendLabel(v.rank)}</span>
         </div>
-      </div>`;
-    card.addEventListener('click', () => window.open(`https://youtube.com/watch?v=${v.id}`, '_blank'));
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      window.open(`https://youtube.com/watch?v=${v.id}`, '_blank', 'noopener');
+    });
     grid.appendChild(card);
   });
 }
@@ -976,13 +965,12 @@ function getTrendLabel(rank) {
 
 function updateStats() {
   document.getElementById('statCount').textContent = allVideos.length;
-  const totalViews = allVideos.reduce((a,v) => a + v.views, 0);
-  const totalLikes = allVideos.reduce((a,v) => a + v.likes, 0);
+  const totalViews = allVideos.reduce((a, v) => a + v.views, 0);
+  const totalLikes = allVideos.reduce((a, v) => a + v.likes, 0);
   document.getElementById('statViews').textContent = fmtNum(totalViews);
   document.getElementById('statLikes').textContent = fmtNum(totalLikes);
 }
 
-// ── UTILS ──
 function setLoading(on) {
   document.getElementById('loader').classList.toggle('show', on);
   document.getElementById('videoGrid').style.display = on ? 'none' : 'grid';
@@ -996,14 +984,18 @@ function showEmpty(msg) {
 }
 
 function fmtNum(n) {
-  if (n >= 1e8) return (n/1e8).toFixed(1) + '억';
-  if (n >= 1e4) return (n/1e4).toFixed(1) + '만';
-  if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
+  if (n >= 1e8) return (n / 1e8).toFixed(1) + '억';
+  if (n >= 1e4) return (n / 1e4).toFixed(1) + '만';
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
   return n.toLocaleString();
 }
 
 function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 </script>
 </body>
