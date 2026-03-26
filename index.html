@@ -1071,7 +1071,7 @@ function renderVideos() {
     grid.appendChild(card);
 
     // 21번째 카드 뒤에 광고 삽입
-    if (i === 20) {
+    if (i === 11 || i === 20 || i === 29 || i === 38) {
       const adCard = document.createElement('div');
       adCard.className = 'ad-inline-card';
       adCard.innerHTML = `
@@ -1086,9 +1086,8 @@ function renderVideos() {
       `;
       grid.appendChild(adCard);
 
-const adEl = adCard.querySelector('.adsbygoogle');
-initSingleAd(adEl);
-    
+      const adEl = adCard.querySelector('.adsbygoogle');
+      initSingleAd(adEl);
     }
   });
 }
